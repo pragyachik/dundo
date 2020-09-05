@@ -29,6 +29,7 @@ import { dundoaccess } from './abi/dundoaccess';
 const dundoaccess_adr = '0xC0115dA899f8E0F13104B9b60Dc28973a7d59F36';
 
 
+var pasa_logo = require('./images/pasa_logo.png');
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -114,7 +115,6 @@ class Dundo extends Component{
     this.setState({
       [cur_tab]:true,
     });
-    console.log('hii',cur_tab,this.state.place_an_order)
   }
 
   show_window = (cur_window) => {
@@ -132,7 +132,7 @@ class Dundo extends Component{
     return (
     <Layout>
       <Header className="header">
-        <div className="logo" />
+        <img className="logo" src={pasa_logo}></img>
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>          
           <Menu.Item key="2" onClick={() => this.show_window('about_page')}>About</Menu.Item>
           <Menu.Item key="3" onClick={() => this.show_window('sign_in')}>Account</Menu.Item>
@@ -155,8 +155,8 @@ class Dundo extends Component{
               style={{ height: '100%' }}
             >
               <SubMenu key="sub1" icon={<UserOutlined />} title="Orders">
-                <Menu.Item key="5" onClick={() => this.show_tab('register_client')}>Register client</Menu.Item>
-                <Menu.Item key="1" onClick={() => this.show_tab('place_an_order')}>Place an Order</Menu.Item>
+                <Menu.Item key="1" onClick={() => this.show_tab('register_client')}>Register client</Menu.Item>
+                <Menu.Item key="5" onClick={() => this.show_tab('place_an_order')}>Place an Order</Menu.Item>
                 <Menu.Item key="2" onClick={() => this.show_tab('view_status')}>View Status</Menu.Item>
                 <Menu.Item key="3" onClick={() => this.show_tab('wallet')}>Wallet</Menu.Item>
                 <Menu.Item key="4" onClick={() => this.show_tab('past_orders')}>Past orders</Menu.Item>
