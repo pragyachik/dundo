@@ -7,8 +7,10 @@ import 'antd/dist/antd.css';
 import './index.css';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import Web3 from 'web3';
 
 import Place_an_order from './components/place_an_order'
+import Register_client from './components/register_client'
 import View_status from './components/view_status'
 import Wallet from './components/wallet'
 import Past_orders from './components/past_orders'
@@ -23,15 +25,57 @@ import Dundos from './components/dundos'
 import Sign_in from './components/sign_in'
 import About_page from './components/about_page'
 
+import { dundoaccess } from './abi/dundoaccess';
+const dundoaccess_adr = '0xC0115dA899f8E0F13104B9b60Dc28973a7d59F36';
+
+
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
 class Dundo extends Component{
+  componentWillMount() {
+    this.loadBlockchainData();
+    console.log('component will mount');
+  }
+
+  async loadBlockchainData() {
+      let web3;
+      if (window.ethereum) {
+          web3 = new Web3(window.ethereum);
+          try { 
+          window.ethereum.enable().then(function() {
+              // User has allowed account access to DApp...
+          });
+          } catch(e) {
+          // User has denied account access to DApp...
+          }
+      }
+      // Legacy DApp Browsers
+      else if (window.web3) {
+          web3 = new Web3(window.web3.currentProvider);
+      }
+      // Non-DApp Browsers
+      else {
+          alert('You have to install MetaMask !');
+      }
+      const accounts = await web3.eth.getAccounts()
+      const balance = await web3.eth.getBalance(accounts[0])
+
+      const dundoaccess_contract = new web3.eth.Contract(dundoaccess, dundoaccess_adr);
+
+      this.setState({ 
+          account: accounts[0],
+          balance: balance/Math.pow(10,18),
+          dundoaccess_contract: dundoaccess_contract,
+      });
+  }
+
   constructor(props){
     super(props);
     this.state = {
-      place_an_order:true,
+      register_client:true,
+      place_an_order:false,
       view_status:false,
       wallet:false,
       past_orders:false,
@@ -47,12 +91,14 @@ class Dundo extends Component{
       sign_in:false,
       dundo_window:false,
       about_page:true,
+      account:'',
     }
   }
   
   show_tab = (cur_tab) => {
     this.setState({
-      place_an_order:false,
+      register_client:false,
+      place_an_order:false,      
       view_status:false,
       wallet:false,
       past_orders:false,
@@ -109,6 +155,7 @@ class Dundo extends Component{
               style={{ height: '100%' }}
             >
               <SubMenu key="sub1" icon={<UserOutlined />} title="Orders">
+                <Menu.Item key="5" onClick={() => this.show_tab('register_client')}>Register client</Menu.Item>
                 <Menu.Item key="1" onClick={() => this.show_tab('place_an_order')}>Place an Order</Menu.Item>
                 <Menu.Item key="2" onClick={() => this.show_tab('view_status')}>View Status</Menu.Item>
                 <Menu.Item key="3" onClick={() => this.show_tab('wallet')}>Wallet</Menu.Item>
@@ -130,6 +177,7 @@ class Dundo extends Component{
           </Sider>
           <Content className="site-layout-background" style={{ padding: '0 24px', minHeight: 280 }}>            
             <div className="content_data">            
+              { this.state.register_client ? <Register_client /> : null }
               { this.state.place_an_order ? <Place_an_order /> : null }
               { this.state.view_status ? <View_status /> : null }
               { this.state.wallet ? <Wallet /> : null }
@@ -147,7 +195,7 @@ class Dundo extends Component{
         </Layout>
       </Content> : null }
       { this.state.about_page ? <About_page /> : null }
-      { this.state.sign_in ? <Sign_in /> : null }
+      { this.state.sign_in ? <Sign_in account={ this.state.account } balance={ this.state.balance } /> : null }
       <Footer style={{ textAlign: 'center' }}>Dundo ©2020 Created by pasa</Footer>
     </Layout>
   )

@@ -1,54 +1,52 @@
 import React, { useState, Component } from 'react';
 import { Skeleton } from 'antd';
-import Web3 from 'web3';
+// import Web3 from 'web3';
 
-class Sign_in extends Component{
-    componentWillMount() {
-        this.loadBlockchainData();
-        console.log('component will mount');
-    }
+function Sign_in (props){
+    // componentWillMount() {
+    //     this.loadBlockchainData();
+    //     console.log('component will mount');
+    // }
 
-    async loadBlockchainData() {
-        let web3;
-        if (window.ethereum) {
-            web3 = new Web3(window.ethereum);
-            try { 
-            window.ethereum.enable().then(function() {
-                // User has allowed account access to DApp...
-            });
-            } catch(e) {
-            // User has denied account access to DApp...
-            }
-        }
-        // Legacy DApp Browsers
-        else if (window.web3) {
-            web3 = new Web3(window.web3.currentProvider);
-        }
-        // Non-DApp Browsers
-        else {
-            alert('You have to install MetaMask !');
-        }
-        const accounts = await web3.eth.getAccounts()
-        const balance = await web3.eth.getBalance(accounts[0])
-        this.setState({ 
-            account: accounts[0],
-            balance: balance/Math.pow(10,18),
-        });
-    }
+    // async loadBlockchainData() {
+    //     let web3;
+    //     if (window.ethereum) {
+    //         web3 = new Web3(window.ethereum);
+    //         try { 
+    //         window.ethereum.enable().then(function() {
+    //             // User has allowed account access to DApp...
+    //         });
+    //         } catch(e) {
+    //         // User has denied account access to DApp...
+    //         }
+    //     }
+    //     // Legacy DApp Browsers
+    //     else if (window.web3) {
+    //         web3 = new Web3(window.web3.currentProvider);
+    //     }
+    //     // Non-DApp Browsers
+    //     else {
+    //         alert('You have to install MetaMask !');
+    //     }
+    //     const accounts = await web3.eth.getAccounts()
+    //     const balance = await web3.eth.getBalance(accounts[0])
+    //     this.setState({ 
+    //         account: accounts[0],
+    //         balance: balance/Math.pow(10,18),
+    //     });
+    // }
 
-    constructor(props) {
-        super(props)
-        this.state = { account: '' };
-    }
+    // constructor(props) {
+    //     super(props)
+    //     this.state = { account: '' };
+    // }
 
-    render(){
-        return (
-            <div className="container">
-              <p>Your account: {this.state.account}</p>
-              <p>Balance: {this.state.balance} Ether</p>
-            </div>
-          );
-    }
+    return (
+        <div className="container">
+            <p>Your account: {props.account}</p>
+            <p>Balance: {props.balance} Ether</p>
+        </div>
+        );
 };
 
 export default Sign_in;
