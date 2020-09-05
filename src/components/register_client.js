@@ -45,13 +45,15 @@ GoogleMapComponent.defaultProps = {
 };
 
 class Register_client extends Component{
-    state = { visible: false };
-//   const [componentSize, setComponentSize] = useState('default');
-
-//   const onFormLayoutChange = ({ size }) => {
-//     setComponentSize(size);
-//   };
-
+    state = { 
+        visible: false,
+        latitude: 0,
+        longitude: 0, 
+    };
+    constructor(props){
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+    }
 
   showModal = () => {
     this.setState({
@@ -74,8 +76,32 @@ class Register_client extends Component{
   };
 
   submit_lat_long = e => {
-      console.log('submit')
+      console.log('submit');
+      var first_lat = 0;
+      var decimal_lat = 0;
+      var first_long = 0;
+      var decimal_long = 0;
+      if(this.state.latitude.includes('.')){
+        first_lat = this.state.latitude.split('.')[0];
+        decimal_lat = this.state.latitude.split('.')[1];
+      }
+      else{          
+        first_lat = this.state.latitude;
+      }
+      if(this.state.longitude.includes('.')){
+        first_long = this.state.latitude.split('.')[0];
+        decimal_long = this.state.longitude.split('.')[1];
+      }
+      else{          
+        first_long = this.state.longitude;
+      }
+    //   console.log(first_lat,decimal_lat,first_long,decimal_long);
+      this.props.register_lat_long(first_lat,decimal_lat,first_long,decimal_long)
   }
+
+  handleChange = e => {
+    this.setState({[e.target.name]: e.target.value});
+    }
 
   render(){
 
@@ -112,13 +138,13 @@ class Register_client extends Component{
         size={componentSize} */
       >
         <Form.Item label="Latitude">
-          <Input />
+          <Input type="number" name="latitude" onChange={this.handleChange}/>
         </Form.Item>
         <Form.Item label="Longitude">
-          <Input />
+          <Input type="number" name="longitude" onChange={this.handleChange}/>
         </Form.Item>        
-        <Form.Item label="Submit">
-          <Button onClick={() => this.submit_lat_long()} >Button</Button>
+        <Form.Item>
+          <Button onClick={() => this.submit_lat_long()} >Submit</Button>
         </Form.Item>
       </Form>
     </>

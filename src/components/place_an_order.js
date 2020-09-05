@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 import {
   Form,
   Input,
@@ -12,93 +12,81 @@ import {
   Switch,
 } from 'antd';
 
-const Place_an_order = () => {
-  const [componentSize, setComponentSize] = useState('default');
-
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
+class Place_an_order extends Component{
+  state = { 
+    visible: false,
+    latitude: 0,
+    longitude: 0, 
+    address: '',
+    instructions: '',
   };
+  constructor(props){
+      super(props);
+      this.handleChange = this.handleChange.bind(this);
+  }
+  submit_place_order = e => {
+    console.log('submit');
+    var first_lat = 0;
+    var decimal_lat = 0;
+    var first_long = 0;
+    var decimal_long = 0;
+    if(this.state.latitude.includes('.')){
+      first_lat = this.state.latitude.split('.')[0];
+      decimal_lat = this.state.latitude.split('.')[1];
+    }
+    else{          
+      first_lat = this.state.latitude;
+    }
+    if(this.state.longitude.includes('.')){
+      first_long = this.state.latitude.split('.')[0];
+      decimal_long = this.state.longitude.split('.')[1];
+    }
+    else{          
+      first_long = this.state.longitude;
+    }
+  //   console.log(first_lat,decimal_lat,first_long,decimal_long);
+    this.props.contract_place_order(first_lat,decimal_lat,first_long,decimal_long,this.state.instructions,this.state.address)
+  }
 
-  return (
-    <>
-    <h2 className="heading" >Place an Order</h2>
-        <hr></hr>
-      <Form
-        labelCol={{
-          span: 4,
-        }}
-        wrapperCol={{
-          span: 14,
-        }}
-        layout="horizontal"
-        initialValues={{
-          size: componentSize,
-        }}
-        onValuesChange={onFormLayoutChange}
-        size={componentSize}
-      >
-        <Form.Item label="Form Size" name="size">
-          <Radio.Group>
-            <Radio.Button value="small">Small</Radio.Button>
-            <Radio.Button value="default">Default</Radio.Button>
-            <Radio.Button value="large">Large</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item label="Input">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Select">
-          <Select>
-            <Select.Option value="demo">Demo</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item label="TreeSelect">
-          <TreeSelect
-            treeData={[
-              {
-                title: 'Light',
-                value: 'light',
-                children: [
-                  {
-                    title: 'Bamboo',
-                    value: 'bamboo',
-                  },
-                ],
-              },
-            ]}
-          />
-        </Form.Item>
-        <Form.Item label="Cascader">
-          <Cascader
-            options={[
-              {
-                value: 'zhejiang',
-                label: 'Zhejiang',
-                children: [
-                  {
-                    value: 'hangzhou',
-                    label: 'Hangzhou',
-                  },
-                ],
-              },
-            ]}
-          />
-        </Form.Item>
-        <Form.Item label="DatePicker">
-          <DatePicker />
-        </Form.Item>
-        <Form.Item label="InputNumber">
-          <InputNumber />
-        </Form.Item>
-        <Form.Item label="Switch">
-          <Switch />
-        </Form.Item>
-        <Form.Item label="Button">
-          <Button>Button</Button>
-        </Form.Item>
-      </Form>
-    </>
-  );
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  render(){
+    return (
+      <>
+      <h2 className="heading" >Place an Order</h2>
+          <hr></hr>
+        <Form
+          labelCol={{
+            span: 4,
+          }}
+          wrapperCol={{
+            span: 14,
+          }}
+          layout="horizontal"
+        >
+          <Form.Item label="Pickup Instructions">
+            <Input.TextArea name="instructions" onChange={this.handleChange}/>
+          </Form.Item>
+          <Form.Item label="Pickup Address">
+            <Input name="address" onChange={this.handleChange}/>
+          </Form.Item>
+          <Form.Item label="Pickup Latitude">
+            <Input type='number' name="latitude" onChange={this.handleChange}/>
+          </Form.Item>
+          <Form.Item label="Pickup Longitude">
+            <Input type='number' name="longitude" onChange={this.handleChange}/>
+          </Form.Item>
+          <Form.Item label="Submit">
+            <Button onClick={() => this.submit_place_order()}>Submit</Button>
+          </Form.Item>
+        </Form>
+      </>
+    );
+  }
 };
 
 export default Place_an_order;

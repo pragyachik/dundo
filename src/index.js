@@ -25,8 +25,7 @@ import Dundos from './components/dundos'
 import Sign_in from './components/sign_in'
 import About_page from './components/about_page'
 
-import { dundoaccess } from './abi/dundoaccess';
-const dundoaccess_adr = '0xC0115dA899f8E0F13104B9b60Dc28973a7d59F36';
+import { dundoaccess, dundoaccess_adr } from './abi/dundoaccess';
 
 
 var pasa_logo = require('./images/pasa_logo.png');
@@ -63,13 +62,28 @@ class Dundo extends Component{
       const accounts = await web3.eth.getAccounts()
       const balance = await web3.eth.getBalance(accounts[0])
 
-      const dundoaccess_contract = new web3.eth.Contract(dundoaccess, dundoaccess_adr);
+      const dundoaccess_contract = new web3.eth.Contract(dundoaccess, dundoaccess_adr,{from:accounts[0]});
+      window.dundoaccess_contract = dundoaccess_contract;
 
       this.setState({ 
           account: accounts[0],
           balance: balance/Math.pow(10,18),
-          dundoaccess_contract: dundoaccess_contract,
+          web3:web3,
       });
+  }
+
+  register_lat_long = (lat0,lat1,long0,long1) => {
+    console.log(lat0,lat1,long0,long1);
+    window.dundoaccess_contract.methods.RegisterConsumer([lat0,lat1,long0,long1]).send().on('transactionHash',function(hash){ 
+      console.log("Hash: " + hash)
+    });
+  }
+
+  contract_place_order = (lat0,lat1,long0,long1,instructions,address) => {
+    console.log(lat0,lat1,long0,long1,instructions,address);
+    window.dundoaccess_contract.methods.PlaceOrder(String(address), String(instructions), [lat0,lat1,long0,long1]).send({ value: this.state.web3.utils.toWei("0.033", "ether") }).on('transactionHash',function(hash){ 
+      console.log("Hash: " + hash)
+    });
   }
 
   constructor(props){
@@ -177,8 +191,8 @@ class Dundo extends Component{
           </Sider>
           <Content className="site-layout-background" style={{ padding: '0 24px', minHeight: 280 }}>            
             <div className="content_data">            
-              { this.state.register_client ? <Register_client /> : null }
-              { this.state.place_an_order ? <Place_an_order /> : null }
+              { this.state.register_client ? <Register_client register_lat_long={this.register_lat_long} /> : null }
+              { this.state.place_an_order ? <Place_an_order contract_place_order={this.contract_place_order}/> : null }
               { this.state.view_status ? <View_status /> : null }
               { this.state.wallet ? <Wallet /> : null }
               { this.state.past_orders ? <Past_orders /> : null }

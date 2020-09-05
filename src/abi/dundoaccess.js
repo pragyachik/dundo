@@ -1,4 +1,5 @@
-export const dundoaccess = [
+const dundoaccess_adr = '0x907d8145ADF4048aef3950899207738afC5F5C7B';
+const dundoaccess = [
 	{
 		"anonymous": false,
 		"inputs": [
@@ -402,3 +403,5 @@ export const dundoaccess = [
 		"type": "function"
 	}
 ]
+
+export { dundoaccess, dundoaccess_adr }
