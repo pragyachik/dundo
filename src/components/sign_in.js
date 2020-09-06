@@ -11,6 +11,9 @@ function Sign_in (props){
             </Col>
             <Col span={12}>
             <Statistic title="Balance (Ether)" value={props.balance} precision={2} />
+            <Button onClick={props.showportis} style={{ marginTop: 16 }} type="primary">
+                Show Portis
+            </Button>
             </Col>
         </Row>
         </div>

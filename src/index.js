@@ -5,8 +5,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'antd/dist/antd.css';
 import './index.css';
+import ipfs from './ipfs'
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+
+import Portis from '@portis/web3';
 import Web3 from 'web3';
 
 import Place_an_order from './components/place_an_order'
@@ -29,9 +32,27 @@ import { dundoaccess, dundoaccess_adr } from './abi/dundoaccess';
 
 
 var pasa_logo = require('./images/pasa_logo.png');
+const use_portis = true;
+
+const portis = new Portis('b57ac8ea-146d-43bf-9731-4f5b64223df9', 'mainnet');
+const customNode = {
+  nodeUrl: 'http://localhost:7545/',//'https://rpc-mumbai.matic.today',
+  chainId: 1,
+};
+portis.changeNetwork(customNode);
+portis.showPortis();
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
+
+window.account = 'none';
+
+portis.onLogin(
+  walletAddress => {
+    window.account = walletAddress;
+    console.log('walletaddress',walletAddress)
+  }        
+)
 
 class Dundo extends Component{
   componentWillMount() {
@@ -41,33 +62,43 @@ class Dundo extends Component{
 
   async loadBlockchainData() {
       let web3;
-      if (window.ethereum) {
-          web3 = new Web3(window.ethereum);
-          try { 
-          window.ethereum.enable().then(function() {
-              // User has allowed account access to DApp...
-          });
-          } catch(e) {
-          // User has denied account access to DApp...
-          }
+      if(use_portis){
+        const web3 = new Web3(portis.provider);
       }
-      // Legacy DApp Browsers
-      else if (window.web3) {
-          web3 = new Web3(window.web3.currentProvider);
+      else{
+        if (window.ethereum) {
+            web3 = new Web3(window.ethereum);
+            try { 
+            window.ethereum.enable().then(function() {
+                // User has allowed account access to DApp...
+            });
+            } catch(e) {
+            // User has denied account access to DApp...
+            }
+        }
+        // Legacy DApp Browsers
+        else if (window.web3) {
+            web3 = new Web3(window.web3.currentProvider);
+        }
+        // Non-DApp Browsers
+        else {
+            alert('You have to install MetaMask !');
+        }
       }
-      // Non-DApp Browsers
-      else {
-          alert('You have to install MetaMask !');
-      }
-      const accounts = await web3.eth.getAccounts()
-      const balance = await web3.eth.getBalance(accounts[0])
+      // portis.getExtendedPublicKey("m/44'/60'/0'/0/0", 'Ethereum').then(({ error, result }) => {
+      //   console.log(error, result);
+      // });
+      // const account = 'none'
+      
+      // const balance = 0;
+      // const accounts = await web3.eth.getAccounts()
+      // const balance = await web3.eth.getBalance(accounts[0])
 
-      const dundoaccess_contract = new web3.eth.Contract(dundoaccess, dundoaccess_adr,{from:accounts[0]});
-      window.dundoaccess_contract = dundoaccess_contract;
+      // const dundoaccess_contract = new web3.eth.Contract(dundoaccess, dundoaccess_adr,{from:accounts[0]});
+      // window.dundoaccess_contract = dundoaccess_contract;
 
       this.setState({ 
-          account: accounts[0],
-          balance: balance/Math.pow(10,18),
+          balance: 0,//balance/Math.pow(10,18),
           web3:web3,
       });
   }
@@ -84,6 +115,10 @@ class Dundo extends Component{
     window.dundoaccess_contract.methods.PlaceOrder(String(address), String(instructions), [lat0,lat1,long0,long1]).send({ value: this.state.web3.utils.toWei("0.033", "ether") }).on('transactionHash',function(hash){ 
       console.log("Hash: " + hash)
     });
+  }
+
+  show_portis = () => {
+    portis.showPortis();
   }
 
   constructor(props){
@@ -106,7 +141,6 @@ class Dundo extends Component{
       sign_in:false,
       dundo_window:false,
       about_page:true,
-      account:'',
     }
   }
   
@@ -168,14 +202,14 @@ class Dundo extends Component{
               defaultOpenKeys={['sub1']}
               style={{ height: '100%' }}
             >
-              <SubMenu key="sub1" icon={<UserOutlined />} title="Orders">
+              <SubMenu key="sub1" icon={<UserOutlined />} title="Clients">
                 <Menu.Item key="1" onClick={() => this.show_tab('register_client')}>Register client</Menu.Item>
                 <Menu.Item key="5" onClick={() => this.show_tab('place_an_order')}>Place an Order</Menu.Item>
                 <Menu.Item key="2" onClick={() => this.show_tab('view_status')}>View Status</Menu.Item>
                 <Menu.Item key="3" onClick={() => this.show_tab('wallet')}>Wallet</Menu.Item>
                 <Menu.Item key="4" onClick={() => this.show_tab('past_orders')}>Past orders</Menu.Item>
               </SubMenu>
-              <SubMenu key="sub2" icon={<LaptopOutlined />} title="Dundo">
+              <SubMenu key="sub2" icon={<LaptopOutlined />} title="Dundo(deliverer)">
                 <Menu.Item key="5" onClick={() => this.show_tab('dundo_take_an_order')}>Take an Order</Menu.Item>
                 <Menu.Item key="6" onClick={() => this.show_tab('dundo_update_status')}>Update Status</Menu.Item>
                 <Menu.Item key="7" onClick={() => this.show_tab('dundo_wallet')}>Wallet</Menu.Item>
@@ -209,7 +243,7 @@ class Dundo extends Component{
         </Layout>
       </Content> : null }
       { this.state.about_page ? <About_page /> : null }
-      { this.state.sign_in ? <Sign_in account={ this.state.account } balance={ this.state.balance } /> : null }
+      { this.state.sign_in ? <Sign_in showportis={ this.show_portis } account={ window.account } balance={ this.state.balance } /> : null }
       <Footer style={{ textAlign: 'center' }}>Dundo ©2020 Created by pasa</Footer>
     </Layout>
   )
