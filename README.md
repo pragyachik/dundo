@@ -1,3 +1,7 @@
+## Dundo
+
+A peer to peer delivery service. Clients send their requests for deliveries(ex. buying groceries, transporting items etc.) along with a security deposit to guarantee payment. An available Delivery expert within a 6 mile radius is assigned the order, and sent the order details. He accepts by signing a security deposit that guarantees he will do the job. When the job is done and the client accepts, both are refunded, and the delivery expert is automatically paid from the clients security deposit, and both security deposits are refunded. Client can rate the delivery expert afterwards.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
