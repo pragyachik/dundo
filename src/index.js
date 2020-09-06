@@ -47,12 +47,43 @@ const { Header, Content, Footer, Sider } = Layout;
 
 window.account = 'none';
 
+window.contract_is_loaded = false;
 portis.onLogin(
   walletAddress => {
     window.account = walletAddress;
     console.log('walletaddress',walletAddress)
+    const dundoaccess_contract = new window.local_web3.eth.Contract(dundoaccess, dundoaccess_adr,{from:walletAddress});
+    window.dundoaccess_contract = dundoaccess_contract;
+    console.log(window.dundoaccess_contract)
+    window.contract_is_loaded = true;
   }        
 )
+
+let web3;
+if(use_portis){
+  const web3 = new Web3(portis.provider);
+  window.local_web3 = web3;
+}
+else{
+  if (window.ethereum) {
+      web3 = new Web3(window.ethereum);
+      try { 
+      window.ethereum.enable().then(function() {
+          // User has allowed account access to DApp...
+      });
+      } catch(e) {
+      // User has denied account access to DApp...
+      }
+  }
+  // Legacy DApp Browsers
+  else if (window.web3) {
+      web3 = new Web3(window.web3.currentProvider);
+  }
+  // Non-DApp Browsers
+  else {
+      alert('You have to install MetaMask !');
+  }
+}
 
 class Dundo extends Component{
   componentWillMount() {
@@ -61,49 +92,14 @@ class Dundo extends Component{
   }
 
   async loadBlockchainData() {
-      let web3;
-      if(use_portis){
-        const web3 = new Web3(portis.provider);
-      }
-      else{
-        if (window.ethereum) {
-            web3 = new Web3(window.ethereum);
-            try { 
-            window.ethereum.enable().then(function() {
-                // User has allowed account access to DApp...
-            });
-            } catch(e) {
-            // User has denied account access to DApp...
-            }
-        }
-        // Legacy DApp Browsers
-        else if (window.web3) {
-            web3 = new Web3(window.web3.currentProvider);
-        }
-        // Non-DApp Browsers
-        else {
-            alert('You have to install MetaMask !');
-        }
-      }
-      // portis.getExtendedPublicKey("m/44'/60'/0'/0/0", 'Ethereum').then(({ error, result }) => {
-      //   console.log(error, result);
-      // });
-      // const account = 'none'
-      
-      // const balance = 0;
-      // const accounts = await web3.eth.getAccounts()
-      // const balance = await web3.eth.getBalance(accounts[0])
-
-      // const dundoaccess_contract = new web3.eth.Contract(dundoaccess, dundoaccess_adr,{from:accounts[0]});
-      // window.dundoaccess_contract = dundoaccess_contract;
-
-      this.setState({ 
-          balance: 0,//balance/Math.pow(10,18),
-          web3:web3,
-      });
+      console.log('nothing')
   }
 
   register_lat_long = (lat0,lat1,long0,long1) => {
+    if(!window.contract_is_loaded){
+      alert('Please login first');
+      return;
+    }
     console.log(lat0,lat1,long0,long1);
     window.dundoaccess_contract.methods.RegisterConsumer([lat0,lat1,long0,long1]).send().on('transactionHash',function(hash){ 
       console.log("Hash: " + hash)
@@ -111,9 +107,31 @@ class Dundo extends Component{
   }
 
   contract_place_order = (lat0,lat1,long0,long1,instructions,address) => {
+    if(!window.contract_is_loaded){
+      alert('Please login first');
+      return;
+    }
     console.log(lat0,lat1,long0,long1,instructions,address);
-    window.dundoaccess_contract.methods.PlaceOrder(String(address), String(instructions), [lat0,lat1,long0,long1]).send({ value: this.state.web3.utils.toWei("0.033", "ether") }).on('transactionHash',function(hash){ 
-      console.log("Hash: " + hash)
+    ipfs.files.add(Buffer.from(address, 'utf8'), (error, result) => {
+      if(error){
+        alert(error);
+        return;
+      }
+      this.setState({address_ipfsHash: result[0]});
+      console.log('address ipfs hash: ',result[0]);
+      ipfs.files.add(Buffer.from(instructions, 'utf8'), (error2, result2) => {
+        if(error2){
+          alert(error2);
+          return;
+        }
+        this.setState({instructions_ipfsHash: result2[0]});
+        console.log('instructions ipfs hash: ',result2[0]);
+        window.dundoaccess_contract.methods.PlaceOrder(this.state.address_ipfsHash, this.state.instructions_ipfsHash, [lat0,lat1,long0,long1]).send({ value: window.local_web3.utils.toWei("0.033", "ether") }).on('transactionHash',function(hash){ 
+        console.log("Hash: " + this.state.address_ipfsHash)
+        console.log('hash2: '+this.state.instructions_ipfsHash)
+      });
+    });    
+    console.log('executin stuff, but nothing happened')
     });
   }
 
