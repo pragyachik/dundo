@@ -11,7 +11,7 @@ contract DundoFramework is Ownable{
     struct Guy{ //Guy = Delivery executive
         address publicKey;
         uint256[] area; //area = [latitude(decimal), latitude(fractional) longitude(decimal), longitude(fractional),  radius]
-        string name;
+        bytes32 name;
         bool active;
         uint256 active_since;
     }
@@ -30,9 +30,9 @@ contract DundoFramework is Ownable{
     
     
     
-    event NewGuy(uint id, uint256[] area, string name);
+    event NewGuy(address indexed myAdress);
     
-    function _create_guy(uint256[] memory area, string memory name, address addres1) private{
+    function _create_guy(uint256[] memory area, bytes32 name, address addres1) private{
         _guys.push(Guy(addres1, area, name, false, now));
         uint id = _guys.length - 1;
         GuyToOwner[id] = addres1;
@@ -40,7 +40,7 @@ contract DundoFramework is Ownable{
         OwnerIsGuy[addres1] = true;
     }
     
-    event NewConsumer(uint id, uint256[] home_address);
+    event NewConsumer(address indexed myAdress);
     
     function _create_consumer(uint256[] memory home_address, address addres1) private{
         _consumers.push(Consumer(addres1, home_address));
@@ -52,9 +52,11 @@ contract DundoFramework is Ownable{
     
     function RegisterConsumer(uint256[] calldata home_address) external{
         _create_consumer(home_address, msg.sender);
+        emit NewConsumer(msg.sender);
     }
     
-    function RegisterGuy(uint256[] calldata area, string calldata name) external{
+    function RegisterGuy(uint256[] calldata area, bytes32 name) external{
         _create_guy(area, name, msg.sender);
+        emit NewGuy(msg.sender);
     }
 }

@@ -33,6 +33,7 @@ import { dundoaccess, dundoaccess_adr } from './abi/dundoaccess';
 
 var pasa_logo = require('./images/pasa_logo.png');
 const use_portis = true;
+const MAP = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
 const portis = new Portis('b57ac8ea-146d-43bf-9731-4f5b64223df9', 'mainnet');
 const customNode = {
@@ -125,8 +126,12 @@ class Dundo extends Component{
           return;
         }
         this.setState({instructions_ipfsHash: result2[0].hash});
-        console.log('instructions ipfs hash: ',result2[0]);
-        window.dundoaccess_contract.methods.PlaceOrder(window.local_web3.utils.toUtf8(this.state.address_ipfsHash), window.local_web3.utils.toUtf8(this.state.instructions_ipfsHash), [lat0,lat1,long0,long1]).send({ value: window.local_web3.utils.toWei("0.033", "ether") }).on('transactionHash',function(hash){ 
+        // console.log('instructions ipfs hash: ',result2[0]);
+        // console.log('hii')
+        // console.log(toHexString(from_b58(address_ipfsHash,MAP)).toUpperCase());        
+        // console.log(toHexString(from_b58(instructions_ipfsHash,MAP)).toUpperCase());
+        // console.log('hii')
+        window.dundoaccess_contract.methods.PlaceOrder(window.local_web3.utils.toHex(window.local_web3.utils.toUtf8(this.state.address_ipfsHash.substring(2))), window.local_web3.utils.toHex(window.local_web3.utils.toUtf8(this.state.instructions_ipfsHash.substring(2))), [lat0,lat1,long0,long1]).send({ value: window.local_web3.utils.toWei("0.033", "ether") }).on('transactionHash',function(hash){ 
         console.log("Hash: " + this.state.address_ipfsHash)
         console.log('hash2: '+this.state.instructions_ipfsHash)
       });

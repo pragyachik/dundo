@@ -53,9 +53,9 @@ contract DundoMatch is DundoDeliver{
     }
     
     //Order[] mismatch_order;
-    event order_assign(string deliveryPersonname, address indexed myAddress, uint256 pin);
+    event order_assign(bytes32 deliveryPersonname, address indexed myAddress, uint256 pin);
     event order_fail(address indexed myAddress);
-    event delivery_assign(string pickup_address, string instructions, uint256[] pickup_location);
+    event delivery_assign(bytes32 pickup_address, bytes32 instructions, uint256[] pickup_location);
     /*
     function _sift_and_assign() private {
         Order memory current;
@@ -82,7 +82,7 @@ contract DundoMatch is DundoDeliver{
             if(match_found){
                 current.g = g;
                 current.assigned = true;
-                current.status = string(abi.encodePacked('Delivery Executive', g.name, 'is on the way'));
+                current.status = bytes32(abi.encodePacked('Delivery Executive', g.name, 'is on the way'));
                 OCount--;
                 emit order_assign(g.name);
             } else{
@@ -95,7 +95,7 @@ contract DundoMatch is DundoDeliver{
     */
 
     
-    function PlaceOrder(string calldata pickup_address, string calldata instructions, uint256[] calldata pickup_location) external payable onlyConsumer{
+    function PlaceOrder(bytes32 pickup_address, bytes32 instructions, uint256[] calldata pickup_location) external payable onlyConsumer{
         require(msg.value == SecurityDeposit);
         require(OwnerHasOrder[msg.sender] == false);
         uint256 order_index = _createOrder(OwnerToConsumer[msg.sender], pickup_address, instructions, pickup_location);
@@ -109,7 +109,6 @@ contract DundoMatch is DundoDeliver{
         if(match_found){
                 ord.g = g;
                 ord.assigned = true;
-                ord.status = string(abi.encodePacked('Delivery Executive', g.name, 'is on the way'));
                 OwnerHasDelivery[g.publicKey] = true;
                 OwnerToDelivery[g.publicKey] = order_index;
                 g.active_since = now;

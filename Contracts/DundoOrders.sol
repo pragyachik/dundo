@@ -9,12 +9,12 @@ contract DundoOrders is DundoFramework{
     struct Order{
         Consumer c;
         Guy g;
-        string pickup_address;
+        bytes32 pickup_address;
         uint256[] pickup_location;
-        string instructions;
+        bytes32 instructions;
         uint256[] home_address;
         uint256 createTime;
-        string status;
+        bytes32 status;
         bool assigned;
         bool fulfilled;
         bool GuyHappy;
@@ -92,13 +92,13 @@ contract DundoOrders is DundoFramework{
     uint pinDigits = 4;
     uint pinModulus = 10 ** pinDigits;
     
-    function _generateRandomPin(string memory _str) private view returns (uint) {
+    function _generateRandomPin(bytes32 _str) private view returns (uint) {
         uint rand = uint(keccak256(abi.encodePacked(_str)));
         return rand % pinModulus;
     }
 
     
-    function _createOrder(uint cid, string memory pickup_address, string memory instructions, uint256[] memory pickup_location) internal returns (uint256 order_index){
+    function _createOrder(uint cid, bytes32 pickup_address, bytes32 instructions, uint256[] memory pickup_location) internal returns (uint256 order_index){
         uint rand_pin = _generateRandomPin(pickup_address);
         OrdersList.push(Order(_consumers[cid], BogusG, pickup_address, pickup_location, instructions, _consumers[cid].home_address, now, "New Order", false, false, false, false, false, rand_pin));
         uint index = OrdersList.length - 1;
