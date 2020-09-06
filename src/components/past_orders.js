@@ -25,17 +25,17 @@ const Past_orders = () => {
     <>
     <h2 className="heading" >Past Orders</h2>
         <hr></hr>
-        <Card title="Card title">
-    <Card type="inner" title="Inner Card title" extra={<a href="#">More</a>}>
-      Inner Card content
+        <Card title="History">
+    <Card type="inner" title="Order 1" extra={<a href="#">More</a>}>
+      somecontent
     </Card>
     <Card
       style={{ marginTop: 16 }}
       type="inner"
-      title="Inner Card title"
+      title="Order 2"
       extra={<a href="#">More</a>}
     >
-      Inner Card content
+      Some content
     </Card>
   </Card>
     </>

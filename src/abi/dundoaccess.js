@@ -1,4 +1,4 @@
-const dundoaccess_adr = '0x907d8145ADF4048aef3950899207738afC5F5C7B';
+const dundoaccess_adr = '0x51E5706f13B97403BcD0c9e51774E046f0Fc6514';
 const dundoaccess = [
 	{
 		"anonymous": false,
@@ -17,16 +17,10 @@ const dundoaccess = [
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256[]",
-				"name": "home_address",
-				"type": "uint256[]"
+				"indexed": true,
+				"internalType": "address",
+				"name": "myAdress",
+				"type": "address"
 			}
 		],
 		"name": "NewConsumer",
@@ -36,22 +30,10 @@ const dundoaccess = [
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256[]",
-				"name": "area",
-				"type": "uint256[]"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
+				"indexed": true,
+				"internalType": "address",
+				"name": "myAdress",
+				"type": "address"
 			}
 		],
 		"name": "NewGuy",
@@ -147,15 +129,15 @@ const dundoaccess = [
 		"inputs": [
 			{
 				"indexed": false,
-				"internalType": "string",
+				"internalType": "bytes32",
 				"name": "pickup_address",
-				"type": "string"
+				"type": "bytes32"
 			},
 			{
 				"indexed": false,
-				"internalType": "string",
+				"internalType": "bytes32",
 				"name": "instructions",
-				"type": "string"
+				"type": "bytes32"
 			},
 			{
 				"indexed": false,
@@ -217,9 +199,9 @@ const dundoaccess = [
 		"inputs": [
 			{
 				"indexed": false,
-				"internalType": "string",
+				"internalType": "bytes32",
 				"name": "deliveryPersonname",
-				"type": "string"
+				"type": "bytes32"
 			},
 			{
 				"indexed": true,
@@ -266,14 +248,14 @@ const dundoaccess = [
 	{
 		"inputs": [
 			{
-				"internalType": "string",
+				"internalType": "bytes32",
 				"name": "pickup_address",
-				"type": "string"
+				"type": "bytes32"
 			},
 			{
-				"internalType": "string",
+				"internalType": "bytes32",
 				"name": "instructions",
-				"type": "string"
+				"type": "bytes32"
 			},
 			{
 				"internalType": "uint256[]",
@@ -307,9 +289,9 @@ const dundoaccess = [
 				"type": "uint256[]"
 			},
 			{
-				"internalType": "string",
+				"internalType": "bytes32",
 				"name": "name",
-				"type": "string"
+				"type": "bytes32"
 			}
 		],
 		"name": "RegisterGuy",

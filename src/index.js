@@ -36,7 +36,7 @@ const use_portis = true;
 
 const portis = new Portis('b57ac8ea-146d-43bf-9731-4f5b64223df9', 'mainnet');
 const customNode = {
-  nodeUrl: 'http://localhost:7545/',//'https://rpc-mumbai.matic.today',
+  nodeUrl: 'http://localhost:7545/',//'https://testnet2.matic.network','https://rpc-mumbai.matic.today',
   chainId: 1,
 };
 portis.changeNetwork(customNode);
@@ -117,16 +117,16 @@ class Dundo extends Component{
         alert(error);
         return;
       }
-      this.setState({address_ipfsHash: result[0]});
+      this.setState({address_ipfsHash: result[0].hash});
       console.log('address ipfs hash: ',result[0]);
       ipfs.files.add(Buffer.from(instructions, 'utf8'), (error2, result2) => {
         if(error2){
           alert(error2);
           return;
         }
-        this.setState({instructions_ipfsHash: result2[0]});
+        this.setState({instructions_ipfsHash: result2[0].hash});
         console.log('instructions ipfs hash: ',result2[0]);
-        window.dundoaccess_contract.methods.PlaceOrder(this.state.address_ipfsHash, this.state.instructions_ipfsHash, [lat0,lat1,long0,long1]).send({ value: window.local_web3.utils.toWei("0.033", "ether") }).on('transactionHash',function(hash){ 
+        window.dundoaccess_contract.methods.PlaceOrder(window.local_web3.utils.toUtf8(this.state.address_ipfsHash), window.local_web3.utils.toUtf8(this.state.instructions_ipfsHash), [lat0,lat1,long0,long1]).send({ value: window.local_web3.utils.toWei("0.033", "ether") }).on('transactionHash',function(hash){ 
         console.log("Hash: " + this.state.address_ipfsHash)
         console.log('hash2: '+this.state.instructions_ipfsHash)
       });

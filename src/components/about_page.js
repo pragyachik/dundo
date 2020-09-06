@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Carousel } from 'antd';
 var imageName = require('../images/deliveryman.jpg');
-var imageName2 = require('../images/deliverygirl.png');
+var imageName2 = require('../images/deliverygirl.jpg');
 var imageName3 = require('../images/motorcycle.jpg');
 
 const contentStyle = {
@@ -16,13 +16,13 @@ const About_page = () => {
   return (
     <Carousel autoplay>
     <div>
-      <h3 style={contentStyle}><div><img src={imageName} /></div></h3>        
+      <h3 style={contentStyle}><div><img src={imageName} height="900"/></div></h3>        
     </div>
     <div>
-    <h3 style={contentStyle}><div><img src={imageName3} height="1000"/></div></h3> 
+    <h3 style={contentStyle}><div><img src={imageName3} /></div></h3> 
     </div>
     <div>
-    <h3 style={contentStyle}><div><img src={imageName2} height="600"/></div></h3> 
+    <h3 style={contentStyle}><div><img src={imageName2} height="800"/></div></h3> 
     </div>
   </Carousel>
   );

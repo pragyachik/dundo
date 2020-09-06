@@ -29,10 +29,10 @@ const Dundo_your_rating = () => {
         <Rate allowHalf defaultValue={2.5} />
         <Row gutter={16}>
     <Col span={12}>
-      <Statistic title="Active Users" value={112893} />
+      <Statistic title="Orders Completed" value={3} />
     </Col>
     <Col span={12}>
-      <Statistic title="Account Balance (CNY)" value={112893} precision={2} />
+      <Statistic title="Total Earned(Eth)" value={33} precision={2} />
       <Button style={{ marginTop: 16 }} type="primary">
         Recharge
       </Button>

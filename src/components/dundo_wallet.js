@@ -28,18 +28,18 @@ const Dundo_wallet = () => {
         <div className="site-card-wrapper">
     <Row gutter={16}>
       <Col span={8}>
-        <Card title="Card title" bordered={false}>
-          Card content
+        <Card title="Security Deposit" bordered={false}>
+          0.0 Eth
         </Card>
       </Col>
       <Col span={8}>
-        <Card title="Card title" bordered={false}>
-          Card content
+        <Card title="Payment Received" bordered={false}>
+          0.0 Eth
         </Card>
       </Col>
       <Col span={8}>
-        <Card title="Card title" bordered={false}>
-          Card content
+        <Card title="Total Balance" bordered={false}>
+          0.0 Eth
         </Card>
       </Col>
     </Row>

@@ -23,19 +23,21 @@ const Dundo_take_an_order = () => {
 
   return (
     <>
-    <h2 className="heading" >Take an Order</h2>
+    <h2 className="heading" >Take an order</h2>
         <hr></hr>
-        <Card title="Card title">
-    <Card type="inner" title="Inner Card title" extra={<a href="#">More</a>}>
-      Inner Card content
+        <Card title="List of available orders">
+    <Card type="inner" title="Client 1: 0x569c7f0b41ce9649602a0218cd02ed0b0a3d93130329451cc782b7dfda79ce71" extra={<a href="#">More</a>}>
+      Deliver tomatoes to india, near the aquarium
+      <Button>Accept</Button>
     </Card>
     <Card
       style={{ marginTop: 16 }}
       type="inner"
-      title="Inner Card title"
+      title="Client 2: 0x45d25abffe8c792d74d30346429b5bc244b815eeb378a9c38395f7a466cf6894"
       extra={<a href="#">More</a>}
     >
-      Inner Card content
+      Deliver the television in my warehouse to my current address.
+      <Button>Accept</Button>
     </Card>
   </Card>
     </>
