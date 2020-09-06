@@ -29,7 +29,7 @@ const Wallet = () => {
     <Row gutter={16}>
       <Col span={8}>
         <Card title="Security Deposit" bordered={false}>
-          0.0 Eth
+          0.33 Eth
         </Card>
       </Col>
       <Col span={8}>

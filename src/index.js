@@ -37,7 +37,7 @@ const MAP = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
 const portis = new Portis('b57ac8ea-146d-43bf-9731-4f5b64223df9', 'mainnet');
 const customNode = {
-  nodeUrl: 'http://localhost:7545/',//'https://testnet2.matic.network','https://rpc-mumbai.matic.today',
+  nodeUrl: 'http://localhost:7545/',//'https://rpc-mumbai.matic.today','http://localhost:7545/','https://testnet2.matic.network',
   chainId: 1,
 };
 portis.changeNetwork(customNode);
@@ -232,7 +232,7 @@ class Dundo extends Component{
                 <Menu.Item key="3" onClick={() => this.show_tab('wallet')}>Wallet</Menu.Item>
                 <Menu.Item key="4" onClick={() => this.show_tab('past_orders')}>Past orders</Menu.Item>
               </SubMenu>
-              <SubMenu key="sub2" icon={<LaptopOutlined />} title="Dundo(deliverer)">
+              <SubMenu key="sub2" icon={<LaptopOutlined />} title="Dundo">
                 <Menu.Item key="5" onClick={() => this.show_tab('dundo_take_an_order')}>Take an Order</Menu.Item>
                 <Menu.Item key="6" onClick={() => this.show_tab('dundo_update_status')}>Update Status</Menu.Item>
                 <Menu.Item key="7" onClick={() => this.show_tab('dundo_wallet')}>Wallet</Menu.Item>

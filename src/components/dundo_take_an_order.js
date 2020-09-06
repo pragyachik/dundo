@@ -27,16 +27,15 @@ const Dundo_take_an_order = () => {
         <hr></hr>
         <Card title="List of available orders">
     <Card type="inner" title="Client 1: 0x569c7f0b41ce9649602a0218cd02ed0b0a3d93130329451cc782b7dfda79ce71" extra={<a href="#">More</a>}>
-      Deliver tomatoes to india, near the aquarium
+      Pick documents from home and bring it to my office 
       <Button>Accept</Button>
     </Card>
     <Card
       style={{ marginTop: 16 }}
       type="inner"
       title="Client 2: 0x45d25abffe8c792d74d30346429b5bc244b815eeb378a9c38395f7a466cf6894"
-      extra={<a href="#">More</a>}
-    >
-      Deliver the television in my warehouse to my current address.
+      extra={<a href="#">More</a>}    >
+      Pick 20 L water can from Sparkling Aqua next to Police Station and leave it at my apartment door
       <Button>Accept</Button>
     </Card>
   </Card>

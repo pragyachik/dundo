@@ -27,7 +27,7 @@ const Past_orders = () => {
         <hr></hr>
         <Card title="History">
     <Card type="inner" title="Order 1" extra={<a href="#">More</a>}>
-      somecontent
+      pickup medicine from apollo pharmacy and deliver to my grandma
     </Card>
     <Card
       style={{ marginTop: 16 }}
@@ -35,7 +35,7 @@ const Past_orders = () => {
       title="Order 2"
       extra={<a href="#">More</a>}
     >
-      Some content
+      biryani from nandhini deluxe
     </Card>
   </Card>
     </>
